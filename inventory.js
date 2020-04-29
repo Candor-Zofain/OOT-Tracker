@@ -129,7 +129,10 @@ const MAX_ITEM_VALUES = {
     "ocarina": OCARINA.length - 1,
     "_shot": _SHOT.length - 1,
     "magic-beans": 10,
-    "bottle": BOTTLE.length - 1,
+    "bottle-1": BOTTLE.length - 1,
+    "bottle-2": BOTTLE.length - 1,
+    "bottle-3": BOTTLE.length - 1,
+    "bottle-4": BOTTLE.length - 1,
     "quest-child": QUEST_CHILD.length - 1,
     "quest-adult": QUEST_ADULT.length - 1,
     "strength": STRENGTH.length - 1,
@@ -137,9 +140,21 @@ const MAX_ITEM_VALUES = {
     "wallet": WALLET.length - 1,
     "magic": MAGIC.length - 1,
     "triforce": 100,
-    "skulltula": 100
+    "skulltula": 100,
+    "key-small-forest": 5,
+    "key-small-fire": 8,
+    "key-small-water": 6,
+    "key-small-spirit": 5,
+    "key-small-shadow": 5,
+    "key-small-gtg": 9,
+    "key-small-gf": 4,
+    "key-small-ganon": 1,
+    "key-small-botw": 3
 };
-Object.freeze(MAX_ITEM_VALUES);
+// Object.freeze(MAX_ITEM_VALUES);
+
+const DEFAULT_COLOR = "white";
+const MAX_COLOR = "lime";
 
 function mod (num, mod) {
     return ((num % mod) + mod) % mod;
@@ -157,20 +172,50 @@ const ResizeFunc = function (event) {
 }
 new ResizeObserver(ResizeFunc).observe(document.querySelector("#inventory"));
 
-const UpdateLabel = function (item, itemType, value) {
+const UpdateLabel = function (item, itemType, itemName, value) {
+    let count;
     switch (itemType) {
         case 'deku-stick':
         case 'deku-nut':
         case 'bomb':
         case 'bow':
         case 'slingshot':
+            count = item.parentElement.querySelector('.count')
+            count.innerText = NUMS[itemType][value];
+            if (value === MAX_ITEM_VALUES[itemName]) {
+                count.style.color = MAX_COLOR;
+            } else {
+                count.style.color = DEFAULT_COLOR;
+            }
+            break;
         case 'wallet':
-            item.parentElement.querySelector('.count').innerText = NUMS[itemType][value];
+            count = item.parentElement.querySelector('.count')
+            count.innerText = NUMS[itemType][value];
+            if (value >= MAX_ITEM_VALUES[itemName] - 1) {
+                count.style.color = MAX_COLOR;
+            } else {
+                count.style.color = DEFAULT_COLOR;
+            }
             break;
         case 'magic-beans':
         case 'triforce':
         case 'skulltula':
-            item.parentElement.querySelector('.count').innerText = value;
+            count = item.parentElement.querySelector('.count')
+            count.innerText = value;
+            if (value === MAX_ITEM_VALUES[itemName]) {
+                count.style.color = MAX_COLOR;
+            } else {
+                count.style.color = DEFAULT_COLOR;
+            }
+            break;
+        case 'key-small':
+            count = item.parentElement.querySelector('.small-key-num');
+            count.innerText = value;
+            if (value === MAX_ITEM_VALUES[itemName]) {
+                count.style.color = MAX_COLOR;
+            } else {
+                count.style.color = DEFAULT_COLOR;
+            }
             break;
         default:
             break;
@@ -190,6 +235,9 @@ document.querySelectorAll("img").forEach(item => {
     if (itemType === "dungeon") {
         itemType = "dungeon-" + item.dataset.dungeon;
         itemValues[itemType + '-medallion'] = 0;
+    }
+    if (itemType === "key-small" || itemType === "key-boss") {
+        itemType = itemType + '-' + item.dataset.key;
     }
     let value = 0;
     switch (itemType) {
@@ -214,8 +262,11 @@ document.querySelectorAll("img").forEach(item => {
         if (itemType === "dungeon") {
             itemName = "dungeon-" + item.dataset.dungeon;
         }
+        if (itemType === "key-small" || itemType === "key-boss") {
+            itemName = itemType + '-' + item.dataset.key;
+        }
 
-        let maxValue = MAX_ITEM_VALUES[itemType] || 1;
+        let maxValue = MAX_ITEM_VALUES[itemName] || 1;
         let value = mod(parseInt(item.dataset.value) + 1, maxValue + 1);
 
         switch (itemType) {
@@ -264,7 +315,7 @@ document.querySelectorAll("img").forEach(item => {
 
         itemValues[itemName] = item.dataset.value = value;
 
-        UpdateLabel(item, itemType, value);
+        UpdateLabel(item, itemType, itemName, value);
     };
 
     // Right Click Functionality
@@ -279,8 +330,11 @@ document.querySelectorAll("img").forEach(item => {
         if (itemType === "dungeon") {
             itemName = "dungeon-" + item.dataset.dungeon;
         }
+        if (itemType === "key-small" || itemType === "key-boss") {
+            itemName = itemType + '-' + item.dataset.key;
+        }
 
-        let maxValue = MAX_ITEM_VALUES[itemType] || 1;
+        let maxValue = MAX_ITEM_VALUES[itemName] || 1;
         let value = mod(parseInt(item.dataset.value) - 1, maxValue + 1);
 
         switch (itemType) {
@@ -344,7 +398,7 @@ document.querySelectorAll("img").forEach(item => {
 
         itemValues[itemName] = item.dataset.value = value;
 
-        UpdateLabel(item, itemType, value);
+        UpdateLabel(item, itemType, itemName, value);
 
         return false;
     };
