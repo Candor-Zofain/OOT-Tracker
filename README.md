@@ -9,3 +9,7 @@ Tested browsers: Chrome
 
 Current features:
 Fully interactable item tracker
+
+Logic to test:
+Gohma deku scrubs with slingshot, deku nuts, etc.
+Deku Tree bottom web with Din's Fire

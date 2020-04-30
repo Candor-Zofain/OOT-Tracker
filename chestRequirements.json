@@ -1,0 +1,225 @@
+{
+    "abilities": {
+
+    },
+    "areas": {
+        "Kokiri Forest": {
+            "child": [{
+                "glitches": [],
+                "abilities": [],
+                "items": []
+            }],
+            "adult": [{
+                "glitches": [],
+                "abilities": [],
+                "items": []
+            }]
+        },
+        "Deku Tree": {
+            "child": [{
+                "glitches": [],
+                "abilities": [],
+                "items": []
+            }],
+            "adult": []
+        },
+        "Lost Woods": {
+            "child": [{
+                "glitches": [],
+                "abilities": [],
+                "items": []
+            }],
+            "adult": [{
+                "glitches": [],
+                "abilities": [],
+                "items": []
+            }]
+        }
+    },
+    "chests": {
+        "Kokiri Forest": {
+            "Mido's House": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Kokiri Sword Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": []
+                }
+            },
+            "Shop": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Song of Storms Grotto": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["ocarina", "song-storms"]
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["ocarina", "song-storms"]
+                    }]
+                }
+            }
+        },
+        "Deku Tree": {
+            "Map Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Slingshot Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-deku"]
+                    }, {
+                        "glitches": ["equip-swap"],
+                        "abilities": [],
+                        "items": ["hammer", "din's-fire"]
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-hylian"]
+                    }, {
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["hammer"]
+                    }]
+                }
+            },
+            "Slingshot Room Side Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-deku"]
+                    }, {
+                        "glitches": ["equip-swap"],
+                        "abilities": [],
+                        "items": ["hammer", "din's-fire"]
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-hylian"]
+                    }, {
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["hammer"]
+                    }]
+                }
+            },
+            "Compass Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Compass Room Side Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Basement Chest": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                            "glitches": [],
+                            "abilities": ["weapon-child"],
+                            "items": []
+                        },
+                        {
+                            "glitches": [],
+                            "abilities": [],
+                            "items": ["deku-nut"]
+                        }
+                    ],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": []
+                    }]
+                }
+            },
+            "Gohma": [{
+                "child": {
+                    "anyTime": [
+                        ["slingshot", "deku-shield", "deku-sticks"]
+                    ]
+                },
+                "adult": {
+                    "anyTime": [
+                        ["shield-hylian", "Din's Fire", "Magic"]
+                    ]
+                }
+            }]
+        }
+    }
+}

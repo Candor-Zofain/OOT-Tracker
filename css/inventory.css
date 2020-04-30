@@ -1,24 +1,16 @@
-* {
-    user-select: none;
-}
-
-body {
-    overflow-y: hidden;
-}
-
 #inventory {
     display: flex;
     flex-direction: column;
-    
+
     width: fit-content;
     max-height: calc(100vh - 16px);
-    
+
     background-color: rgb(81, 81, 81);
 }
 
 .row {
     display: flex;
-    max-width: calc((100vh - 16px) / 11 * 6);
+    max-width: calc((100vh - 16px) / 12.5 * 6);
 }
 
 .numbered-item {
@@ -52,7 +44,7 @@ body {
 .item {
     display: block;
     width: 100%;
-    
+
     cursor: pointer;
 }
 
@@ -61,7 +53,8 @@ body {
     -webkit-filter: brightness(50%);
 }
 
-.item[data-value="0"] + span, .item[data-value="0"][data-item="key-small"] ~ div {
+.item[data-value="0"]+span,
+.item[data-value="0"][data-item="key-small"]~div {
     display: none;
 }
 
@@ -70,7 +63,7 @@ body {
     font-weight: 600;
     color: white;
     text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
-    
+
     pointer-events: none;
 }
 

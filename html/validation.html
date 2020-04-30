@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/validation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <h1>Chest Logic JSON Validator</h1>
+    <p class="description">Safety check to ensure the area and chest logic is formatted correctly.</p>
+    <div id="check-container">
+        <div id="abilities" class="section drop-down" data-invalid-count="0">
+            <h2>Abilities</h2>
+            <div class="flex">
+                <div class="info">
+                    <p class="description">Specific sets of items that allow for certain actions.<br>Not implemented yet
+                    </p>
+                </div>
+                <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div id="areas" class="section drop-down" data-invalid-count="0">
+            <h2>Areas</h2>
+            <div class="flex">
+                <div class="info">
+                    <p class="description">Each area in the game and the requirements for entering it.</p>
+                </div>
+                <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div id="chest-areas" class="section drop-down" data-invalid-count="0">
+            <h2>Chests</h2>
+            <div class="flex">
+                <div class="info">
+                    <p class="description">The requirements to reach each chest and open it, assuming that the area can
+                        be
+                        reached.</p>
+                </div>
+                <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+</body>
+
+<footer>
+    <script src="/js/validateChestRequirements.js"></script>
+</footer>
+
+</html>

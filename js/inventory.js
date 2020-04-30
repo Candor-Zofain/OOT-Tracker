@@ -118,7 +118,9 @@ const DUNGEON = [
     'Shadow'
 ];
 Object.freeze(DUNGEON);
-const DUNGEON_AVAIL = Array.from({ length: DUNGEON.length - 1 }, (_, index) => index + 1);
+const DUNGEON_AVAIL = Array.from({
+    length: DUNGEON.length - 1
+}, (_, index) => index + 1);
 
 const MAX_ITEM_VALUES = {
     "deku-stick": 3,
@@ -156,19 +158,23 @@ const MAX_ITEM_VALUES = {
 const DEFAULT_COLOR = "white";
 const MAX_COLOR = "lime";
 
-function mod (num, mod) {
+function mod(num, mod) {
     return ((num % mod) + mod) % mod;
 }
 
+let itemLabelStyle;
+Array.from(document.styleSheets).forEach(styleSheet => {
+    if (styleSheet.href.includes('inventory.css')) {
+        Array.from(styleSheet.rules).forEach(rule => {
+            if (rule.selectorText === ".item-label") {
+                itemLabelStyle = rule;
+            }
+        });
+    }
+});
 const ResizeFunc = function (event) {
     let inventory = event[0].target;
-    let textStyle;
-    Array.from(document.styleSheets[0].rules).forEach(rule => {
-        if (rule.selectorText === ".item-label") {
-            textStyle = rule;
-        }
-    });
-    textStyle.style.fontSize = inventory.clientWidth / 18 + "px";
+    itemLabelStyle.style.fontSize = inventory.clientWidth / 18 + "px";
 }
 new ResizeObserver(ResizeFunc).observe(document.querySelector("#inventory"));
 
@@ -222,7 +228,9 @@ const UpdateLabel = function (item, itemType, itemName, value) {
     }
 }
 
-document.querySelector("#inventory").oncontextmenu = () => { return false };
+document.querySelector("#inventory").oncontextmenu = () => {
+    return false
+};
 document.querySelectorAll("img").forEach(img => {
     img.draggable = false;
 });
