@@ -208,18 +208,25 @@
                     }]
                 }
             },
-            "Gohma": [{
-                "child": {
-                    "anyTime": [
-                        ["slingshot", "deku-shield", "deku-sticks"]
-                    ]
-                },
-                "adult": {
-                    "anyTime": [
-                        ["shield-hylian", "Din's Fire", "Magic"]
-                    ]
+            "Gohma": {
+                "time": "anyTime",
+                "logic": {
+                    "child": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["slingshot", "deku-shield", "deku-sticks"]
+                    }],
+                    "adult": [{
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-hylian", "din's-fire", "magic"]
+                    }, {
+                        "glitches": [],
+                        "abilities": [],
+                        "items": ["shield-hylian", "bow", "arrow-fire", "magic"]
+                    }]
                 }
-            }]
+            }
         }
     }
 }

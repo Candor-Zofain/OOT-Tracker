@@ -13,16 +13,20 @@ async function GetChestLogic(callback) {
     xobj.send(null);
 }
 
-function CreateDropDown(dropDownContainer, name) {
+function CreateDropDown(dropDownContainer, name, timeField) {
     let element = document.createElement('div');
     element.className = 'drop-down drop-down-data';
     // element.id = idPrefix + name.split(' ').join('-');
     element.dataset['invalidCount'] = "0";
+    let timeString = typeof timeField === 'string' ? `
+        <p>Time: ${timeField}</p>
+    ` : '';
     element.innerHTML = `
         <div class="flex">
             <h2>${name}</h2>
             <i class="fa fa-caret-down fa-2x" area-hidden="true"></i>
         </div>
+        ${timeString}
     `;
 
     dropDownContainer.appendChild(element);
@@ -65,7 +69,7 @@ function CheckArrayForStrings(containers, array) {
     }
 }
 
-function CreateLogicContianer(containers, logicContainer, logic, name) {
+function CreateLogicContainer(containers, logicContainer, logic, name) {
     let logicElementContainer = CreateDropDown(logicContainer, name);
     let logicElement = CreateDropDownData(logicElementContainer, logic);
 
@@ -103,18 +107,59 @@ StartValidation = function () {
         let areaElement = CreateDropDown(areasContainer, area);
 
         let areaLogic = chestAreaLogic.areas[area];
+
+        if (!Array.isArray(areaLogic.child) || !Array.isArray(areaLogic.adult)) {
+            IncreaseInvalidCount([areasContainer, areaElement]);
+            return;
+        }
+
         let childElement = CreateDropDown(areaElement, 'Child');
         areaLogic.child.forEach((logic, index) => {
             // name = 'Child ' + index
-            CreateLogicContianer([areasContainer, areaElement, childElement], childElement, logic, 'Child ' + index);
+            CreateLogicContainer([areasContainer, areaElement, childElement], childElement, logic, 'Child ' + index);
         });
 
         let adultElement = CreateDropDown(areaElement, 'Adult');
         areaLogic.adult.forEach((logic, index) => {
             // name = 'Child ' + index
-            CreateLogicContianer([areasContainer, areaElement, adultElement], adultElement, logic, 'Adult ' + index);
+            CreateLogicContainer([areasContainer, areaElement, adultElement], adultElement, logic, 'Adult ' + index);
         });
     })
+
+    // Chests
+    let chestsContainer = document.getElementById('chests');
+    if (!chestsContainer) {
+        console.error("ERROR: Element with id 'chests' not found");
+        return;
+    }
+    Object.keys(chestAreaLogic.chests).forEach(chestAreaName => {
+        let chestAreaContainer = CreateDropDown(chestsContainer, chestAreaName);
+
+        let chestArea = chestAreaLogic.chests[chestAreaName];
+        Object.keys(chestArea).forEach(chestName => {
+            let chestLogic = chestArea[chestName];
+
+            let chestElement = CreateDropDown(chestAreaContainer, chestName, chestLogic.time);
+            if (!chestLogic.time) {
+                IncreaseInvalidCount([chestsContainer, chestAreaContainer, chestElement]);
+            }
+
+            if (typeof chestLogic.logic !== "object" || !Array.isArray(chestLogic.logic.child) || !Array.isArray(chestLogic.logic.adult)) {
+                IncreaseInvalidCount([chestsContainer, chestAreaContainer, chestElement]);
+                return;
+            }
+
+            let childElement = CreateDropDown(chestElement, 'Child');
+            chestLogic.logic.child.forEach((logic, index) => {
+                CreateLogicContainer([chestsContainer, chestAreaContainer, chestElement, childElement], childElement, logic, 'Child ' + index);
+            });
+
+            let adultElement = CreateDropDown(chestElement, 'Adult');
+            chestLogic.logic.adult.forEach((logic, index) => {
+                CreateLogicContainer([chestsContainer, chestAreaContainer, chestElement, adultElement], adultElement, logic, 'Adult ' + index);
+            });
+        });
+    });
 
     let zIndex = -1;
     document.querySelectorAll('.drop-down').forEach(element => {
