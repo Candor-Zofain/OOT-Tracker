@@ -1,7 +1,22 @@
+:root {
+    --page-margin: 8px;
+    --max-height: calc(100vh - var(--page-margin) * 2);
+    --max-width: calc(100vw - var(--page-margin) * 2);
+}
+
 * {
     user-select: none;
 }
 
 body {
     overflow-y: hidden;
+    max-height: var(--max-height);
+}
+
+.flex {
+    display: flex;
+}
+
+.flex.vertical {
+    flex-direction: column;
 }
