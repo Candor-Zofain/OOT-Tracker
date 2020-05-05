@@ -1,12 +1,9 @@
 :root {
     --table-padding: 8px;
+    --table-border: 4px;
     --cell-padding: 2px;
     --cell-mult: 1;
-    --cell-size: calc((100vh - 16px - (var(--table-padding) + var(--cell-padding) * 14) * 2) / 14 * var(--cell-mult));
-}
-
-body {
-    overflow-y: hidden;
+    --cell-size: calc((100vh - 8px - (var(--table-padding) + var(--table-border) + var(--cell-padding) * 14) * 2) / 14 * var(--cell-mult));
 }
 
 table {
@@ -17,9 +14,6 @@ table {
     table-layout: fixed;
     border-collapse: collapse;
     border-spacing: 0;
-
-    background-color: rgb(81, 81, 81);
-
 }
 
 tr {
