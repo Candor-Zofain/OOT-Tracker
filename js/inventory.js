@@ -197,7 +197,7 @@ const UpdateLabel = function (item, itemIdSplits, itemId, value) {
 }
 
 document.querySelector("#inventory").oncontextmenu = () => {
-    return false
+    return false;
 };
 document.querySelectorAll("img").forEach(img => {
     img.draggable = false;
@@ -226,16 +226,6 @@ document.querySelectorAll("img").forEach(item => {
         let item = event.currentTarget;
         let itemIdSplits = item.id.split('-');
         let itemId = item.id;
-
-        // if (itemType === "bottle") {
-        //     itemName = "bottle-" + item.dataset.bottle;
-        // }
-        // if (itemType === "dungeon") {
-        //     itemName = "dungeon-" + item.dataset.dungeon;
-        // }
-        // if (itemType === "key-small" || itemType === "key-boss") {
-        //     itemName = itemType + '-' + item.dataset.key;
-        // }
 
         let maxValue = MAX_ITEM_VALUES[itemId] || 1;
         let value = mod(parseInt(item.dataset.value) + 1, maxValue + 1);
@@ -304,16 +294,6 @@ document.querySelectorAll("img").forEach(item => {
         let item = event.currentTarget;
         let itemIdSplits = item.id.split('-');
         let itemId = item.id;
-
-        // if (itemIdSplits === "bottle") {
-        //     itemId = "bottle-" + item.dataset.bottle;
-        // }
-        // if (itemIdSplits === "dungeon") {
-        //     itemId = "dungeon-" + item.dataset.dungeon;
-        // }
-        // if (itemIdSplits === "key-small" || itemIdSplits === "key-boss") {
-        //     itemId = itemIdSplits + '-' + item.dataset.key;
-        // }
 
         let maxValue = MAX_ITEM_VALUES[itemId] || 1;
         let value = mod(parseInt(item.dataset.value) - 1, maxValue + 1);

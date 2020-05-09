@@ -24,7 +24,8 @@ body {
     border-bottom-color: var(--shadow-color-light);
 
     /* background-color: rgb(81, 81, 81); */
-    background-color: rgb(106, 112, 89);
+    /* background-color: rgb(106, 112, 89); */
+    background-color: black;
 }
 
 .flex {

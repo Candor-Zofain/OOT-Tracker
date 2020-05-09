@@ -1,8 +1,8 @@
 :root {
     --line-padding: 16px;
     --border-width: 2px;
-    --border-color: rgba(0, 0, 0, 0.6);
-    --light-background-color: rgb(181, 190, 153);
+    --border-color: rgba(255, 255, 255, 0.7);
+    --light-background-color: rgb(32, 32, 32);
 }
 
 h1 {
@@ -13,11 +13,40 @@ h2 {
     margin: 10px 0;
 }
 
+h1[data-status="0"],
+h2[data-status="0"] {
+    color: rgb(199, 47, 47);
+}
+
+h1[data-status="1"],
+h2[data-status="1"] {
+    color: rgb(199, 129, 0);
+}
+
+h1[data-status="2"],
+h2[data-status="2"] {
+    color: rgb(211, 211, 0);
+}
+
+h1[data-status="3"],
+h2[data-status="3"] {
+    color: rgb(47, 228, 47);
+}
+
+h1[data-status="4"],
+h2[data-status="4"] {
+    color: #777777;
+}
+
 #chest-list {
-    background-color: rgb(81, 81, 81);
     min-width: 400px;
+    height: fit-content;
+    max-height: 100%;
+
     color: white;
-    text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
+    /* --text-shadow-color: rgba(0, 0, 0, 0.7);
+    --text-shadow-blur: 0;
+    text-shadow: -1px 0 var(--text-shadow-blur) var(--text-shadow-color), 1px 0 var(--text-shadow-blur) var(--text-shadow-color), 0 -1px var(--text-shadow-blur) var(--text-shadow-color), 0 1px var(--text-shadow-blur) var(--text-shadow-color); */
 }
 
 .header {
@@ -35,4 +64,10 @@ h2 {
 
 .chest-line:hover {
     background-color: var(--light-background-color);
+}
+
+.chset-line>* {
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-select: none;
 }
