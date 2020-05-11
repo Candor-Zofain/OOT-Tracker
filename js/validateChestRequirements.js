@@ -33,7 +33,7 @@ function CreateDropDown(dropDownContainer, name, timeField) {
     return element;
 }
 
-function CreateDropDownData(dropDownContainer, logic) {
+function CreateChestAreaData(dropDownContainer, logic) {
     let element = document.createElement('div');
     element.className = 'drop-down-data';
     // element.id = idPrefix + name;
@@ -46,6 +46,35 @@ function CreateDropDownData(dropDownContainer, logic) {
     element.innerHTML = `
         <p>Glitches: ${glitches}<br>Abilites: ${abilities}<br>Items: ${items}</p>
     `
+
+    dropDownContainer.appendChild(element);
+    return element;
+}
+
+function CreateAbilityData(dropDownContainer, logic) {
+    let element = document.createElement('div');
+    element.className = 'drop-down-data';
+    element.dataset['invalidCount'] = "0";
+
+    let settings = Array.isArray(logic.settings) ? logic.settings.join(', ') : 'invalid';
+    let abilities = Array.isArray(logic.abilities) ? logic.abilities.join(', ') : 'invalid';
+    let itemSets = '';
+    if (Array.isArray(logic['item-sets'])) {
+        logic['item-sets'].forEach(itemSet => {
+            if (Array.isArray(itemSet)) {
+                itemSets += '<br>&emsp;' + itemSet.join(', ');
+            } else {
+                itemSets += '<br>&emsp;invalid';
+            }
+        });
+    } else {
+        itemSets = 'invalid';
+    }
+
+
+    element.innerHTML = `
+        <p>Settings: ${settings}<br>Abilities: ${abilities}<br>Item Sets: ${itemSets}</p>
+    `;
 
     dropDownContainer.appendChild(element);
     return element;
@@ -71,7 +100,7 @@ function CheckArrayForStrings(containers, array) {
 
 function CreateLogicContainer(containers, logicContainer, logic, name) {
     let logicElementContainer = CreateDropDown(logicContainer, name);
-    let logicElement = CreateDropDownData(logicElementContainer, logic);
+    let logicElement = CreateChestAreaData(logicElementContainer, logic);
 
     let subContainers = containers.concat([logicElementContainer, logicElement]);
     if (!logic.glitches || !logic.abilities || !logic.items) {
@@ -93,8 +122,38 @@ StartValidation = function () {
     console.log(chestAreaLogic);
 
     // Abilities
+    let abilitiesContainer = document.getElementById('abilities');
     Object.keys(chestAreaLogic.abilities).forEach(ability => {
-        // Not implemented yet
+        let abilityElement = CreateDropDown(abilitiesContainer, ability);
+
+        let logic = chestAreaLogic.abilities[ability];
+
+        if (!Array.isArray(logic.settings) || !Array.isArray(logic.abilities) || !Array.isArray(logic["item-sets"])) {
+            IncreaseInvalidCount([abilitiesContainer, abilityElement]);
+            return;
+        }
+
+        let abilityDataElement = CreateAbilityData(abilityElement, logic);
+
+        let containers = [abilitiesContainer, abilityElement, abilityDataElement];
+        if (!logic.settings || !logic.abilities || !logic['item-sets']) {
+            IncreaseInvalidCount(containers);
+        }
+        if (logic.settings) {
+            CheckArrayForStrings(containers, logic.settings);
+        }
+        if (logic.abilities) {
+            CheckArrayForStrings(containers, logic.abilities);
+        }
+        if (logic["item-sets"]) {
+            if (Array.isArray(logic["item-sets"])) {
+                logic["item-sets"].forEach(itemSet => {
+                    CheckArrayForStrings(containers, itemSet);
+                });
+            } else {
+                IncreaseInvalidCount(containers);
+            }
+        }
     });
 
     // Areas

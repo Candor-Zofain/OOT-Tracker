@@ -109,15 +109,42 @@ function GoToChestList(areaName) {
 }
 
 function CheckGlitch(glitchName) {
-    return true;
+    return 3;
 }
 
 function CheckAbility(abilityName) {
-    return true;
+    let ability = chestAreaLogic.abilities[abilityName];
+
+    console.warn('Settings check not implemented');
+    for (let i = 0; i < ability.settings.length; i++) {
+        // Settings check
+    }
+
+    for (let i = 0; i < ability["item-sets"].length; i++) {
+        let itemSet = ability["item-sets"][i];
+        let haveAllItems = true;
+        for (let j = 0; j < itemSet.length; j++) {
+            if (!CheckItem(itemSet[j])) {
+                haveAllItems = false;
+                break;
+            }
+        }
+        if (haveAllItems) return true;
+    }
+
+    for (let i = 0; i < ability.abilities.length; i++) {
+        let subAbility = ability.abilities[i];
+        if (CheckAbility(subAbility)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
-function CheckItem(itemName) {
-    return true;
+function CheckItem(itemName, lowestValue = 1) {
+    let curValue = itemValues[itemName];
+    return curValue >= lowestValue;
 }
 
 function CheckLogic(logic) {
@@ -161,12 +188,38 @@ function CheckLogic(logic) {
 }
 
 function CheckChestStatus(areaName, chestName) {
-    return 0;
+    let chestStatus = logicStatus[areaName].chests[chestName];
+    if (chestStatus.adultStatus === 4) return 4;
+
+    let chestLogic = chestAreaLogic.chests[areaName][chestName].logic;
+    let childStatus = 0; // Only increases
+    for (let i = 0; i < chestLogic.child.length; i++) {
+        let status = CheckLogic(chestLogic.child[i]);
+        if (status > childStatus) {
+            childStatus = status;
+            if (childStatus === 3) {
+                break;
+            }
+        }
+    }
+    chestStatus.childStatus = childStatus;
+
+    let adultStatus = 0; // Only increases
+    for (let i = 0; i < chestLogic.adult.length; i++) {
+        let status = CheckLogic(chestLogic.adult[i]);
+        if (status > adultStatus) {
+            adultStatus = status;
+            if (adultStatus === 3) {
+                break;
+            }
+        }
+    }
+    chestStatus.adultStatus = adultStatus;
 };
 
 function UpdateAreaStatus(areaName) {
     let areaStatus = logicStatus[areaName];
-    if (areaStatus.status === 4) return 4;
+    if (areaStatus.adultStatus === 4) return 4;
 
     let allChestsOpened = true;
     let chestNames = Object.keys(areaStatus.chests);

@@ -1,6 +1,45 @@
 {
+    "glitches": {
+        "equip-swap": {
+            "abilities": [],
+            "items": ["din's-fire"]
+        }
+    },
     "abilities": {
-
+        "weapon-child": {
+            "settings": [],
+            "abilities": [
+                "bombchu-in-logic"
+            ],
+            "item-sets": [
+                ["deku-stick"],
+                ["bomb"],
+                ["din's-fire", "magic"],
+                ["slingshot"],
+                ["sword-kokiri"]
+            ]
+        },
+        "weapon-adult": {
+            "settings": [],
+            "abilities": [
+                "bombchu-in-logic"
+            ],
+            "item-sets": [
+                ["bomb"],
+                ["bow"],
+                ["din's-fire", "magic"],
+                ["hammer"],
+                ["sword-master"],
+                ["sword-biggoron"]
+            ]
+        },
+        "bombchu-in-logic": {
+            "settings": ["bombchu-in-logic"],
+            "abilities": [],
+            "item-sets": [
+                ["bombchu"]
+            ]
+        }
     },
     "areas": {
         "Kokiri Forest": {
