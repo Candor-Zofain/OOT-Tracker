@@ -6,31 +6,13 @@
         }
     },
     "abilities": {
-        "weapon-child": {
+        "all-stones": {
             "settings": [],
-            "abilities": [
-                "bombchu-in-logic"
-            ],
+            "abilities": [],
             "item-sets": [
-                ["deku-stick"],
-                ["bomb"],
-                ["din's-fire", "magic"],
-                ["slingshot"],
-                ["sword-kokiri"]
-            ]
-        },
-        "weapon-adult": {
-            "settings": [],
-            "abilities": [
-                "bombchu-in-logic"
-            ],
-            "item-sets": [
-                ["bomb"],
-                ["bow"],
-                ["din's-fire", "magic"],
-                ["hammer"],
-                ["sword-master"],
-                ["sword-biggoron"]
+                ["medallion-emerald"],
+                ["medallion-ruby"],
+                ["medallion-sapphire"]
             ]
         },
         "bombchu-in-logic": {
@@ -38,6 +20,49 @@
             "abilities": [],
             "item-sets": [
                 ["bombchu"]
+            ]
+        },
+        "enter-zora's-domain-chicken": {
+            "settings": [
+                "enter-zora's-domain-chicken"
+            ],
+            "abilities": [],
+            "item-sets": []
+        },
+        "enter-zora's-domain-child": {
+            "settings": [],
+            "abilities": [
+                "enter-zora's-domain-chicken"
+            ],
+            "item-sets": [
+                ["bomb", "ocarina", "song-zelda"],
+                ["bombchu", "ocarina", "song-zelda"],
+                ["scale"]
+            ]
+        },
+        "weapon-adult": {
+            "settings": [],
+            "abilities": [],
+            "item-sets": [
+                ["bomb"],
+                ["bow"],
+                ["din's-fire", "magic"],
+                ["bombchu"],
+                ["hammer"],
+                ["sword-master"],
+                ["sword-biggoron"]
+            ]
+        },
+        "weapon-child": {
+            "settings": [],
+            "abilities": [],
+            "item-sets": [
+                ["deku-stick"],
+                ["bomb"],
+                ["bombchu"],
+                ["din's-fire", "magic"],
+                ["slingshot"],
+                ["sword-kokiri"]
             ]
         }
     },

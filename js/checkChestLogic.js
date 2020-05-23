@@ -109,7 +109,7 @@ function GoToChestList(areaName) {
 }
 
 function CheckGlitch(glitchName) {
-    return 3;
+    return true;
 }
 
 function CheckAbility(abilityName) {
@@ -147,6 +147,44 @@ function CheckItem(itemName, lowestValue = 1) {
     return curValue >= lowestValue;
 }
 
+function CheckItemExact(itemName, value) {
+    let curValue = itemValues[itemName];
+    return curValue == value;
+}
+
+function CheckMedallion(medallionValue) {
+    return CheckItemExact('medallion-forest', medallionValue) ||
+        CheckItemExact('medallion-fire', medallionValue) ||
+        CheckItemExact('medallion-water', medallionValue) ||
+        CheckItemExact('medallion-spirit', medallionValue) ||
+        CheckItemExact('medallion-shadow', medallionValue) ||
+        CheckItemExact('medallion-free', medallionValue) ||
+        CheckItemExact('medallion-deku', medallionValue) ||
+        CheckItemExact('medallion-dc', medallionValue) ||
+        CheckItemExact('medallion-jabu', medallionValue);
+}
+
+function CheckEmptyBottle() {
+    if (itemValues['bottle-1'] != 0 &&
+        (itemValues['bottle-1'] != 13 || CheckAbility("enter-zora's-domain-child"))
+    ) {
+        return true;
+    } else if (itemValues['bottle-2'] != 0 &&
+        (itemValues['bottle-2'] != 13 || CheckAbility("enter-zora-domain-child"))
+    ) {
+        return true;
+    } else if (itemValues['bottle-3'] != 0 &&
+        (itemValues['bottle-3'] != 13 || CheckAbility("enter-zora-domain-child"))
+    ) {
+        return true;
+    } else if (itemValues['bottle-2'] != 0 &&
+        (itemValues['bottle-2'] != 13 || CheckAbility("enter-zora-domain-child"))
+    ) {
+        return true;
+    }
+    return false;
+}
+
 function CheckLogic(logic) {
     let status = 3; // Only decreases
 
@@ -154,33 +192,120 @@ function CheckLogic(logic) {
     if (logic.glitches.length !== 0) {
         status = 2;
         for (let i = 0; i < logic.glitches.length; i++) {
-            let glitchStatus = CheckGlitch(logic.glitches[i]);
-            if (glitchStatus < status) {
-                status = glitchStatus;
-                if (status === 0) {
-                    return 0;
-                }
+            let glitchName = logic.glitches[i];
+            if (!CheckGlitch(glitchName)) {
+                return 0;
+            }
+            if (!CheckGlitchEnabled(glitchName)) {
+                status = 1;
             }
         }
     }
 
     for (let i = 0; i < logic.abilities.length; i++) {
-        let abilityStatus = CheckAbility(logic.abilities[i]);
-        if (abilityStatus < status) {
-            status = abilityStatus;
-            if (status === 0) {
-                return 0;
-            }
+        if (!CheckAbility(logic.abilities[i])) {
+            return 0;
         }
     }
 
     for (let i = 0; i < logic.items.length; i++) {
-        let itemStatus = CheckItem(logic.items[i]);
-        if (itemStatus < status) {
-            status = itemStatus;
-            if (status === 0) {
-                return 0;
-            }
+        let itemName = logic.items[i];
+        let obtained;
+        switch (itemName) {
+            case 'hookshot':
+                obtained = CheckItem('_shot');
+                break;
+            case 'longshot':
+                obtained = CheckItem('_shot', 2);
+                break;
+            case 'bottle':
+                obtained = CheckItem()
+            case "ruto's-letter":
+                obtained = (CheckItemExact('bottle-1', 13) || CheckItemExact('bottle-2', 13) || CheckItemExact('bottle-3', 13) || CheckItemExact('bottle-4', 13));
+                break;
+            case "blue-fire":
+                obtained = (
+                    CheckItemExact('bottle-1', 6) || CheckItemExact('bottle-2', 6) || CheckItemExact('bottle-3', 6) || CheckItemExact('bottle-4', 6)
+                ) || (
+                    CheckItem('bow') &&
+                    CheckItem('song-epona') &&
+                    (
+                        CheckItem('bottle-1') ||
+                        CheckItem('bottle-2') ||
+                        CheckItem('bottle-3') ||
+                        CheckItem('bottle-4')
+                    )
+                );
+                break;
+            case "skull-mask":
+                obtained = CheckItem('quest-child')
+                break;
+            case "mask-of-truth":
+                obtained = CheckItem('quest-child') && CheckAbility('all-stones');
+                break;
+            case "wallet-adult":
+                obtained = CheckItem("wallet", 2);
+                break;
+            case "wallet-giant":
+                obtained = CheckItem("wallet", 3);
+                break;
+            case "wallet-tycoon":
+                obtained = CheckItem("wallet", 4);
+                break;
+            case "scale-gold":
+                obtained = CheckItem('scale', 2);
+                break;
+            case 'skulltula-10':
+                obtained = CheckItem('skulltula', 10);
+                break;
+            case 'skulltula-20':
+                obtained = CheckItem('skulltula', 20);
+                break;
+            case 'skulltula-30':
+                obtained = CheckItem('skulltula', 30);
+                break;
+            case 'skulltula-40':
+                obtained = CheckItem('skulltula', 40);
+                break;
+            case 'skulltula-50':
+                obtained = CheckItem('skulltula', 50);
+                break;
+            case 'skulltula-100':
+                obtained = CheckItem('skulltula', 100);
+                break;
+            case 'medallion-emerald':
+                obtained = CheckMedallion(1);
+                break;
+            case 'medallion-ruby':
+                obtained = CheckMedallion(2);
+                break;
+            case 'medallion-sapphire':
+                obtained = CheckMedallion(3);
+                break;
+            case 'medallion-light':
+                obtained = CheckMedallion(4);
+                break;
+            case 'medallion-forest':
+                obtained = CheckMedallion(5);
+                break;
+            case 'medallion-fire':
+                obtained = CheckMedallion(6);
+                break;
+            case 'medallion-water':
+                obtained = CheckMedallion(7);
+                break;
+            case 'medallion-spirit':
+                obtained = CheckMedallion(8);
+                break;
+            case 'medallion-shadow':
+                obtained = CheckMedallion(9);
+                break;
+            default:
+                obtained = CheckItem(itemName);
+                break;
+        }
+        if (!obtained) {
+            return 0;
         }
     }
 

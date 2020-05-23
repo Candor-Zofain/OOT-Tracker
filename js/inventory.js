@@ -213,7 +213,7 @@ for (let i = 0; i < rows.length; i++) {
 document.querySelectorAll("img").forEach(item => {
     let itemIdSplits = item.id.split('-');
     if (itemIdSplits[0] === "dungeon") {
-        itemValues[itemIdSplits[1] + '-medallion'] = 0;
+        itemValues['medallion-' + itemIdSplits[1]] = 0;
     }
     let value = 0;
     if (itemIdSplits[0] === "wallet" || (itemIdSplits[0] === 'dungeon' && itemIdSplits[1] === 'free')) {
@@ -335,7 +335,7 @@ document.querySelectorAll("img").forEach(item => {
                 break;
             case "dungeon":
                 value = item.dataset.value;
-                let dungeonStr = itemIdSplits[1] + '-medallion';
+                let dungeonStr = "medallion-" + itemIdSplits[1];
                 let prevMedallionValue = itemValues[dungeonStr];
                 let medallionValue = mod(prevMedallionValue + 1, IMAGES.dungeon.length);
 
