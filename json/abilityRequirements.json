@@ -1,0 +1,121 @@
+{
+    "all-stones": {
+        "AND": [
+            { "ITEM": "medallion-emerald" },
+            { "ITEM": "medallion-ruby" },
+            { "ITEM": "medallion-sapphire" }
+        ]
+    },
+    "bombchu-in-logic": {
+        "AND": [{ "SETTING": "bombchu-in-logic" }, { "ITEM": "bombchu" }]
+    },
+    "enter-zora's-domain-adult": {
+        "OR": [
+            { "ABILITY": "enter-zora's-domain-hover" },
+            { "AND": [{ "ABILITY": "play-songs" }, { "ITEM": "song-zelda" }] }
+        ]
+    },
+    "enter-zora's-domain-chicken": { "SETTING": "enter-zora's-domain-chicken" },
+    "enter-zora's-domain-child": {
+        "OR": [
+            { "ITEM": "scale" },
+            {
+                "AND": [
+                    {
+                        "OR": [
+                            { "ITEM": "bomb" },
+                            { "ABILITY": "bombchu-in-logic" }
+                        ]
+                    },
+                    {
+                        "OR": [
+                            {
+                                "AND": [
+                                    { "ABILITY": "play-songs" },
+                                    { "ITEM": "song-zelda" }
+                                ]
+                            },
+                            { "ABILITY": "enter-zora's-domain-chicken" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "enter-zora's-domain-hover": {
+        "AND": [
+            { "SETTING": "enter-zora's-domain-hover" },
+            { "ITEM": "boots-hover" }
+        ]
+    },
+    "equip-swap-bow": {
+        "AND": [{ "GLITCH": "equip-swap" }, { "ITEM": "bow" }]
+    },
+    "equip-swap-deku-stick": {
+        "AND": [{ "GLITCH": "equip-swap" }, { "ITEM": "deku-stick" }]
+    },
+    "equip-swap-hammer": {
+        "AND": [{ "GLITCH": "equip-swap" }, { "ITEM": "hammer" }]
+    },
+    "equip-swap-slingshot": {
+        "AND": [{ "GLITCH": "equip-swap" }, { "ITEM": "slingshot" }]
+    },
+    "fire-adult": {
+        "AND": [
+            { "ITEM": "magic" },
+            {
+                "OR": [
+                    { "ITEM": "din's-fire" },
+                    { "AND": [{ "ITEM": "bow" }, { "ITEM": "arrow-fire" }] }
+                ]
+            }
+        ]
+    },
+    "fire-child": {
+        "OR": [
+            { "ITEM": "deku-stick" },
+            {
+                "AND": [
+                    { "ITEM": "magic" },
+                    {
+                        "OR": [
+                            { "ITEM": "din's-fire" },
+                            {
+                                "AND": [
+                                    { "ABILITY": "equip-swap-bow" },
+                                    { "ITEM": "arrow-fire" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "play-songs": {
+        "OR": [{ "ITEM": "ocarina" }, { "GLITCH": "ocarina-items" }]
+    },
+    "weapon-adult": {
+        "OR": [
+            { "ITEM": "sword-master" },
+            { "ITEM": "bomb" },
+            { "ITEM": "bow" },
+            { "ITEM": "hammer" },
+            { "ITEM": "sword-biggoron" },
+            { "AND": [{ "ITEM": "din's-fire" }, { "ITEM": "magic" }] },
+            { "ABILITY": "bombchu-in-logic" }
+        ]
+    },
+    "weapon-child": {
+        "OR": [
+            { "ABILITY": "bombchu-in-logic" },
+            { "ITEM": "deku-stick" },
+            { "ITEM": "bomb" },
+            { "AND": [{ "ITEM": "din's-fire" }, { "ITEM": "magic" }] },
+            { "ITEM": "slingshot" },
+            { "ITEM": "sword-kokiri" },
+            { "ABILITY": "equip-swap-bow" },
+            { "ABILITY": "equip-swap-hammer" }
+        ]
+    }
+}

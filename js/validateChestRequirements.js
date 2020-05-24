@@ -1,26 +1,98 @@
-let chestAreaLogic;
+"use strict";
 
-async function GetChestLogic(callback) {
-    var xobj = new XMLHttpRequest();
-
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', '/chestRequirements.json', true);
-    xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-            callback(xobj.responseText);
-        }
-    };
-    xobj.send(null);
-}
+let abilities, glitches, areas;
+let items = [
+    "deku-stick",
+    "deku-nut",
+    "bomb",
+    "bow",
+    "arrow-fire",
+    "din's-fire",
+    "slingshot",
+    "ocarina",
+    "bombchu",
+    "hookshot",
+    "longshot",
+    "arrow-ice",
+    "farore's-wind",
+    "boomerang",
+    "lens-of-truth",
+    "bean",
+    "hammer",
+    "arrow-light",
+    "nayru's-love",
+    "bottle",
+    "ruto's-letter",
+    "blue-fire",
+    "weird-egg",
+    "skull-mask",
+    "mask-of-truth",
+    "claim-check",
+    "sword-kokiri",
+    "sword-master",
+    "sword-biggoron",
+    "magic",
+    "wallet-adult",
+    "wallet-giant",
+    "strength-bracelet",
+    "strength-gauntlet-silver",
+    "strength-gauntlet-gold",
+    "shield-deku",
+    "shield-hylian",
+    "shield-mirror",
+    "scale-silver",
+    "scale-gold",
+    "gerudo-card",
+    "tunic-goron",
+    "tunic-zora",
+    "boots-iron",
+    "boots-hover",
+    "skulltula-10",
+    "skulltula-20",
+    "skulltula-30",
+    "skulltula-40",
+    "skulltula-50",
+    "skulltula-100",
+    "triforce",
+    "song-zelda",
+    "song-epona",
+    "song-saria",
+    "song-sun",
+    "song-time",
+    "song-storm",
+    "song-minuet",
+    "song-bolero",
+    "song-serenade",
+    "song-requiem",
+    "song-nocturne",
+    "song-prelude",
+    "medallion-emerald",
+    "medallion-ruby",
+    "medallion-sapphire",
+    "medallion-forest",
+    "medallion-fire",
+    "medallion-water",
+    "medallion-spirit",
+    "medallion-shadow",
+    "key",
+    "clear-deku",
+    "clear-water"
+];
+let other = [
+    "impossible"
+]
 
 function CreateDropDown(dropDownContainer, name, timeField) {
-    let element = document.createElement('div');
-    element.className = 'drop-down drop-down-data';
+    let element = document.createElement("div");
+    element.className = "drop-down drop-down-data";
     // element.id = idPrefix + name.split(' ').join('-');
-    element.dataset['invalidCount'] = "0";
-    let timeString = typeof timeField === 'string' ? `
-        <p>Time: ${timeField}</p>
-    ` : '';
+    element.dataset["invalidCount"] = "0";
+    let timeString =
+        typeof timeField === "string" ?
+        `
+        <p class="drop-down-data">Time: ${timeField}</p>
+    ` :
+        "";
     element.innerHTML = `
         <div class="flex">
             <h2>${name}</h2>
@@ -33,27 +105,16 @@ function CreateDropDown(dropDownContainer, name, timeField) {
     return element;
 }
 
-function CreateDropDownData(dropDownContainer, logic) {
-    let element = document.createElement('div');
-    element.className = 'drop-down-data';
-    // element.id = idPrefix + name;
-    element.dataset['invalidCount'] = "0";
-
-    let glitches = Array.isArray(logic.glitches) ? logic.glitches.join(', ') : 'invalid';
-    let abilities = Array.isArray(logic.abilities) ? logic.abilities.join(', ') : 'invalid';
-    let items = Array.isArray(logic.items) ? logic.items.join(', ') : 'invalid';
-
-    element.innerHTML = `
-        <p>Glitches: ${glitches}<br>Abilites: ${abilities}<br>Items: ${items}</p>
-    `
-
-    dropDownContainer.appendChild(element);
-    return element;
+function CreateDropDownData(dataContainer, logicString) {
+    dataContainer.innerHTML = `
+        <p>${logicString}</p>
+    `;
 }
 
 function IncreaseInvalidCount(containers) {
-    containers.forEach(container => {
-        container.dataset.invalidCount = parseInt(container.dataset.invalidCount) + 1;
+    containers.forEach((container) => {
+        container.dataset.invalidCount =
+            parseInt(container.dataset.invalidCount) + 1;
     });
 }
 
@@ -62,7 +123,7 @@ function CheckArrayForStrings(containers, array) {
         IncreaseInvalidCount(containers);
     } else {
         for (let i = 0; i < array.length; i++) {
-            if (typeof (array[i]) !== 'string') {
+            if (typeof array[i] !== "string") {
                 IncreaseInvalidCount(containers);
             }
         }
@@ -73,7 +134,10 @@ function CreateLogicContainer(containers, logicContainer, logic, name) {
     let logicElementContainer = CreateDropDown(logicContainer, name);
     let logicElement = CreateDropDownData(logicElementContainer, logic);
 
-    let subContainers = containers.concat([logicElementContainer, logicElement]);
+    let subContainers = containers.concat([
+        logicElementContainer,
+        logicElement,
+    ]);
     if (!logic.glitches || !logic.abilities || !logic.items) {
         IncreaseInvalidCount(subContainers);
     }
@@ -88,102 +152,276 @@ function CreateLogicContainer(containers, logicContainer, logic, name) {
     }
 }
 
-StartValidation = function () {
-    console.log('Starting Validation');
-    console.log(chestAreaLogic);
+function AndOr(containers, logic, layerNum) {
+    if (!Array.isArray(logic)) {
+        IncreaseInvalidCount(containers);
+        return;
+    }
+
+    let logicString = ""
+    for (let i = 0; i < logic.length; i++) {
+        const subLogic = Object.entries(logic[i])[0];
+        const func = LOGIC_TYPE_TO_FUNCTION[subLogic[0]];
+        if (typeof func !== "function") {
+            IncreaseInvalidCount(containers);
+            continue;
+        }
+
+        logicString += func(containers, subLogic[1], layerNum + 1);
+    }
+    return logicString;
+}
+
+function And(containers, logic, layerNum = 0) {
+    let beforeString = ('&emsp;').repeat(layerNum) + "And: {<br>";
+    let middleString = AndOr(containers, logic, layerNum);
+    let afterString = ('&emsp;').repeat(layerNum) + "}<br>";
+    return beforeString + middleString + afterString;
+}
+
+function Or(containers, logic, layerNum = 0) {
+    let beforeString = ('&emsp;').repeat(layerNum) + "Or: {<br>";
+    let middleString = AndOr(containers, logic, layerNum);
+    let afterString = ('&emsp;').repeat(layerNum) + "}<br>";
+    return beforeString + middleString + afterString;
+}
+
+function Ability(containers, ability, layerNum = 0) {
+    if (typeof ability !== "string") {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + "Ability: Not String<br>"
+    } else if (!abilities.includes(ability)) {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + `Ability: ${ability} - Does not exist<br>`;
+    }
+
+    return ("&emsp;").repeat(layerNum) + `Ability: ${ability}<br>`;
+}
+
+function Glitch(containers, glitch, layerNum = 0) {
+    if (typeof glitch !== "string") {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + "Glitch: Not string<br>"
+    } else if (!glitches.includes(glitch)) {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + `Glitch: ${glitch} - Does not exist<br>`;
+    }
+
+    return ("&emsp;").repeat(layerNum) + `Glitch: ${glitch}<br>`;
+}
+
+function Item(containers, item, layerNum = 0) {
+    if (typeof item !== "string") {
+        if (Array.isArray(item) && item[0] === "key" && typeof item[1] === "string" && typeof item[2] === "number") {
+            return ("&emsp;").repeat(layerNum) + `Item: key-${item[1]} (${item[2]})<br>`;
+        } else {
+            IncreaseInvalidCount(containers);
+            return ("&emsp;").repeat(layerNum) + "Item: Invalid<br>";
+        }
+    } else if (!items.includes(item)) {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + `Item: ${item} - Does not exist<br>`;
+    }
+
+    return ("&emsp;").repeat(layerNum) + `Item: ${item}<br>`;
+}
+
+function Other(containers, other, layerNum = 0) {
+    if (typeof other !== "string") {
+        IncreaseInvalidCount(containers);
+        return ("&emsp;").repeat(layerNum) + `Other: Not string<br>`;
+    }
+
+    return ("&emsp;").repeat(layerNum) + `Other: ${other}<br>`;
+}
+
+const LOGIC_TYPE_TO_FUNCTION = {
+    AND: And,
+    OR: Or,
+    ABILITY: Ability,
+    GLITCH: Glitch,
+    ITEM: Item,
+    OTHER: Other
+};
+Object.freeze(LOGIC_TYPE_TO_FUNCTION);
+
+var StartValidation = function () {
+    console.log("Starting Validation");
 
     // Abilities
-    Object.keys(chestAreaLogic.abilities).forEach(ability => {
+    Object.keys(abilityLogic).forEach((ability) => {
         // Not implemented yet
     });
 
     // Areas
-    let areasContainer = document.getElementById('areas');
+    let areasContainer = document.getElementById("areas");
     if (!areasContainer) {
         console.error("ERROR: Element with id 'areas' not found");
         return;
     }
-    Object.keys(chestAreaLogic.areas).forEach(area => {
+    Object.keys(areaLogic).forEach((area) => {
         let areaElement = CreateDropDown(areasContainer, area);
 
-        let areaLogic = chestAreaLogic.areas[area];
+        let singleAreaLogic = areaLogic[area];
 
-        if (!Array.isArray(areaLogic.child) || !Array.isArray(areaLogic.adult)) {
+        if (!(typeof singleAreaLogic.child === "object" && typeof singleAreaLogic.adult === "object")) {
             IncreaseInvalidCount([areasContainer, areaElement]);
             return;
         }
 
-        let childElement = CreateDropDown(areaElement, 'Child');
-        areaLogic.child.forEach((logic, index) => {
-            // name = 'Child ' + index
-            CreateLogicContainer([areasContainer, areaElement, childElement], childElement, logic, 'Child ' + index);
-        });
+        let childElement = CreateDropDown(areaElement, "Child");
+        let childLogic = Object.entries(singleAreaLogic.child);
+        if (childLogic.length > 0) {
+            childLogic = childLogic[0];
+            if (!(childLogic[0] in LOGIC_TYPE_TO_FUNCTION)) {
+                IncreaseInvalidCount([areasContainer, areaElement, childElement]);
+                return;
+            }
+            let dataContainer = document.createElement('div');
+            dataContainer.className = 'drop-down-data';
+            dataContainer.dataset["invalidCount"] = 0;
+            let logicString = LOGIC_TYPE_TO_FUNCTION[childLogic[0]]([areasContainer, areaElement, childElement, dataContainer], childLogic[1]);
+            CreateDropDownData(dataContainer, logicString);
+            childElement.append(dataContainer);
+        } else {
+            let dataContainer = document.createElement('div');
+            dataContainer.className = 'drop-down-data';
+            dataContainer.dataset["invalidCount"] = 0;
+            CreateDropDownData(dataContainer, "No Requirements");
+            childElement.append(dataContainer);
+        }
 
-        let adultElement = CreateDropDown(areaElement, 'Adult');
-        areaLogic.adult.forEach((logic, index) => {
-            // name = 'Child ' + index
-            CreateLogicContainer([areasContainer, areaElement, adultElement], adultElement, logic, 'Adult ' + index);
-        });
-    })
+        let adultElement = CreateDropDown(areaElement, "Adult");
+        let adultLogic = Object.entries(singleAreaLogic.adult);
+        if (adultLogic.length > 0) {
+            adultLogic = adultLogic[0];
+            if (!(adultLogic[0] in LOGIC_TYPE_TO_FUNCTION)) {
+                IncreaseInvalidCount([areasContainer, areaElement, adultElement]);
+                return;
+            }
+            let dataContainer = document.createElement('div');
+            dataContainer.className = 'drop-down-data';
+            dataContainer.dataset["invalidCount"] = 0;
+            let logicString = LOGIC_TYPE_TO_FUNCTION[adultLogic[0]]([areasContainer, areaElement, adultElement, dataContainer], adultLogic[1]);
+            CreateDropDownData(dataContainer, logicString);
+            adultElement.append(dataContainer);
+        } else {
+            let dataContainer = document.createElement('div');
+            dataContainer.className = 'drop-down-data';
+            dataContainer.dataset["invalidCount"] = 0;
+            CreateDropDownData(dataContainer, "No Requirements");
+            adultElement.append(dataContainer);
+        }
+    });
 
     // Chests
-    let chestsContainer = document.getElementById('chests');
+    let chestsContainer = document.getElementById("chests");
     if (!chestsContainer) {
         console.error("ERROR: Element with id 'chests' not found");
         return;
     }
-    Object.keys(chestAreaLogic.chests).forEach(chestAreaName => {
-        let chestAreaContainer = CreateDropDown(chestsContainer, chestAreaName);
+    Object.keys(chestLogic).forEach((areaName) => {
+        let chestContainer = CreateDropDown(chestsContainer, areaName);
 
-        let chestArea = chestAreaLogic.chests[chestAreaName];
-        Object.keys(chestArea).forEach(chestName => {
-            let chestLogic = chestArea[chestName];
+        let chestArea = chestLogic[areaName];
+        Object.keys(chestArea).forEach((chestName) => {
+            let singleChestLogic = chestArea[chestName];
 
-            let chestElement = CreateDropDown(chestAreaContainer, chestName, chestLogic.time);
-            if (!chestLogic.time) {
-                IncreaseInvalidCount([chestsContainer, chestAreaContainer, chestElement]);
+            let chestElement = CreateDropDown(chestContainer, chestName, singleChestLogic.time);
+            if (!singleChestLogic.time) {
+                IncreaseInvalidCount([chestsContainer, chestContainer, chestElement]);
             }
 
-            if (typeof chestLogic.logic !== "object" || !Array.isArray(chestLogic.logic.child) || !Array.isArray(chestLogic.logic.adult)) {
-                IncreaseInvalidCount([chestsContainer, chestAreaContainer, chestElement]);
+            if (typeof singleChestLogic.child !== "object" ||
+                typeof singleChestLogic.adult !== "object") {
+                IncreaseInvalidCount([chestsContainer, chestContainer, chestElement]);
                 return;
             }
 
-            let childElement = CreateDropDown(chestElement, 'Child');
-            chestLogic.logic.child.forEach((logic, index) => {
-                CreateLogicContainer([chestsContainer, chestAreaContainer, chestElement, childElement], childElement, logic, 'Child ' + index);
-            });
+            let childElement = CreateDropDown(chestElement, "Child");
+            let childLogic = Object.entries(singleChestLogic.child);
+            if (childLogic.length > 0) {
+                childLogic = childLogic[0];
+                if (!(childLogic[0] in LOGIC_TYPE_TO_FUNCTION)) {
+                    IncreaseInvalidCount([chestsContainer, chestContainer, chestElement, childElement]);
+                    return;
+                }
+                let dataContainer = document.createElement('div');
+                dataContainer.className = 'drop-down-data';
+                dataContainer.dataset["invalidCount"] = 0;
+                let logicString = LOGIC_TYPE_TO_FUNCTION[childLogic[0]]([chestsContainer, chestContainer, chestElement, childElement, dataContainer], childLogic[1]);
+                CreateDropDownData(dataContainer, logicString)
+                childElement.append(dataContainer);
+            } else {
+                let dataContainer = document.createElement('div');
+                dataContainer.className = 'drop-down-data';
+                dataContainer.dataset["invalidCount"] = 0;
+                CreateDropDownData(dataContainer, "No Requirements");
+                childElement.append(dataContainer);
+            }
 
-            let adultElement = CreateDropDown(chestElement, 'Adult');
-            chestLogic.logic.adult.forEach((logic, index) => {
-                CreateLogicContainer([chestsContainer, chestAreaContainer, chestElement, adultElement], adultElement, logic, 'Adult ' + index);
-            });
+            let adultElement = CreateDropDown(chestElement, "Adult");
+            let adultLogic = Object.entries(singleChestLogic.adult);
+            if (adultLogic.length > 0) {
+                adultLogic = adultLogic[0];
+                if (!(adultLogic[0] in LOGIC_TYPE_TO_FUNCTION)) {
+                    IncreaseInvalidCount([chestsContainer, chestContainer, chestElement, adultElement]);
+                    return;
+                }
+                let dataContainer = document.createElement('div');
+                dataContainer.className = 'drop-down-data';
+                dataContainer.dataset["invalidCount"] = 0;
+                let logicString = LOGIC_TYPE_TO_FUNCTION[adultLogic[0]]([chestsContainer, chestContainer, chestElement, adultElement, dataContainer], adultLogic[1]);
+                CreateDropDownData(dataContainer, logicString);
+                adultElement.append(dataContainer);
+            } else {
+                let dataContainer = document.createElement('div');
+                dataContainer.className = 'drop-down-data';
+                dataContainer.dataset["invalidCount"] = 0;
+                CreateDropDownData(dataContainer, "No Requirements");
+                adultElement.append(dataContainer);
+            }
         });
     });
 
     let zIndex = -1;
-    document.querySelectorAll('.drop-down').forEach(element => {
+    document.querySelectorAll(".drop-down").forEach((element) => {
         element.style["z-index"] = zIndex;
         element.dataset.closed = true;
         zIndex--;
     });
 
-    document.querySelectorAll('i').forEach(icon => {
+    document.querySelectorAll("i").forEach((icon) => {
         icon.onclick = () => {
-            let dropDown = icon.closest('.drop-down');
+            let dropDown = icon.closest(".drop-down");
             let closed = dropDown.dataset.closed;
-            if (closed !== 'true' && closed !== 'false') {
-                console.error('ERROR: Invalid closed value: ' + closed);
+            if (closed !== "true" && closed !== "false") {
+                console.error("ERROR: Invalid closed value: " + closed);
             }
-            dropDown.dataset.closed = (closed === 'false');
-        }
+            dropDown.dataset.closed = closed === "false";
+        };
     });
+
+    console.log("Finished Validation");
 };
 
-let Init = function () {
-    GetChestLogic(function (response) {
-        chestAreaLogic = JSON.parse(response);
-        StartValidation();
-    });
+let Init = async function () {
+    function wait() {
+        if (
+            typeof abilityLogic !== "undefined" &&
+            typeof areaLogic !== "undefined" &&
+            typeof chestLogic !== "undefined" &&
+            typeof glitchLogic !== "undefined"
+        ) {
+            abilities = Object.keys(abilityLogic);
+            glitches = Object.keys(glitchLogic);
+            areas = Object.keys(areaLogic);
+            StartValidation();
+        } else {
+            console.log("waiting...");
+            setTimeout(wait, 10);
+        }
+    }
+    setTimeout(wait, 50);
 };
 Init();

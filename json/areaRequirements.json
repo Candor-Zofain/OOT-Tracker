@@ -1,0 +1,5 @@
+{
+    "Kokiri Forest": { "child": {}, "adult": {} },
+    "Deku Tree": { "child": {}, "adult": { "OTHER": "impossible" } },
+    "Lost Woods": { "child": {}, "adult": {} }
+}
