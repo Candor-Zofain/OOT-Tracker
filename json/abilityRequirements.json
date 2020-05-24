@@ -15,10 +15,9 @@
             { "AND": [{ "ABILITY": "play-songs" }, { "ITEM": "song-zelda" }] }
         ]
     },
-    "enter-zora's-domain-chicken": { "SETTING": "enter-zora's-domain-chicken" },
     "enter-zora's-domain-child": {
         "OR": [
-            { "ITEM": "scale" },
+            { "ITEM": "scale-silver" },
             {
                 "AND": [
                     {
@@ -35,7 +34,7 @@
                                     { "ITEM": "song-zelda" }
                                 ]
                             },
-                            { "ABILITY": "enter-zora's-domain-chicken" }
+                            { "SETTING": "enter-zora's-domain-chicken" }
                         ]
                     }
                 ]
