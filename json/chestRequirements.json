@@ -1,0 +1,92 @@
+{
+    "Kokiri Forest": {
+        "Mido's House": { "time": "anyTime", "child": {}, "adult": {} },
+        "Kokiri Sword Chest": {
+            "time": "anyTime",
+            "child": {},
+            "adult": { "OTHER": "impossible" }
+        },
+        "Shop": { "time": "anyTime", "child": {}, "adult": {} },
+        "Song of Storms Grotto": {
+            "time": "anyTime",
+            "child": {
+                "AND": [{ "ABILITY": "play-songs" }, { "ITEM": "song-storm" }]
+            },
+            "adult": {
+                "AND": [{ "ABILITY": "play-songs" }, { "ITEM": "song-storm" }]
+            }
+        }
+    },
+    "Deku Tree": {
+        "Map Chest": { "time": "anyTime", "child": {}, "adult": {} },
+        "Slingshot Chest": {
+            "time": "anyTime",
+            "child": {
+                "OR": [
+                    { "ITEM": "shield-deku" },
+                    { "ABILITY": "equip-swap-hammer" }
+                ]
+            },
+            "adult": {
+                "OR": [{ "ITEM": "shield-hylian" }, { "ITEM": "hammer" }]
+            }
+        },
+        "Slingshot Room Side Chest": {
+            "time": "anyTime",
+            "child": {
+                "OR": [
+                    { "ITEM": "shield-deku" },
+                    { "ABILITY": "equip-swap-hammer" }
+                ]
+            },
+            "adult": {
+                "OR": [{ "ITEM": "shield-hylian" }, { "ITEM": "hammer" }]
+            }
+        },
+        "Compass Chest": { "time": "anyTime", "child": {}, "adult": {} },
+        "Compass Room Side Chest": {
+            "time": "anyTime",
+            "child": {},
+            "adult": {}
+        },
+        "Basement Chest": {
+            "time": "anyTime",
+            "child": {
+                "OR": [{ "ABILITY": "weapon-child" }, { "ITEM": "deku-nut" }]
+            },
+            "adult": {
+                "OR": [{ "ABILITY": "weapon-adult" }, { "ITEM": "deku-nut" }]
+            }
+        },
+        "Gohma": {
+            "time": "anyTime",
+            "child": {
+                "AND": [
+                    { "ABILITY": "weapon-child" },
+                    { "ITEM": "slingshot" },
+                    { "ITEM": "shield-deku" },
+                    { "ABILITY": "fire-child" }
+                ]
+            },
+            "adult": {
+                "AND": [
+                    { "ABILITY": "fire-adult" },
+                    {
+                        "OR": [
+                            { "ITEM": "shield-hylian" },
+                            { "ITEM": "hammer" }
+                        ]
+                    },
+                    {
+                        "OR": [
+                            { "ITEM": "deku-nut" },
+                            { "ITEM": "bow" },
+                            { "ITEM": "hookshot" },
+                            { "ABILITY": "equip-swap-slingshot" }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

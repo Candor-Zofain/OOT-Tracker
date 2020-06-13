@@ -2,19 +2,35 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/validation.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/validation.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body>
     <h1>Chest Logic JSON Validator</h1>
-    <p class="description">Safety check to ensure the area and chest logic is formatted correctly.</p>
+    <p class="description">
+        Safety check to ensure the area and chest logic is formatted
+        correctly.
+    </p>
     <div id="check-container">
+        <div id="glitches" class="section drop-down" data-invalid-count="0">
+            <h2>Glitches</h2>
+            <div class="flex">
+                <div class="info">
+                    <p class="description">
+                        Glitches that allow players to get chests early and the items required to perform them.
+                    </p>
+                </div>
+                <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+            </div>
+        </div>
         <div id="abilities" class="section drop-down" data-invalid-count="0">
             <h2>Abilities</h2>
             <div class="flex">
                 <div class="info">
-                    <p class="description">Specific sets of items that allow for certain actions.</p>
+                    <p class="description">
+                        Specific sets of items, settings, and other abilities that allow for certain actions.
+                    </p>
                 </div>
                 <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
             </div>
@@ -23,7 +39,10 @@
             <h2>Areas</h2>
             <div class="flex">
                 <div class="info">
-                    <p class="description">Each area in the game and the requirements for entering it.</p>
+                    <p class="description">
+                        Each area in the game and the requirements for
+                        entering it.
+                    </p>
                 </div>
                 <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
             </div>
@@ -32,9 +51,10 @@
             <h2>Chests</h2>
             <div class="flex">
                 <div class="info">
-                    <p class="description">The requirements to reach each chest and open it, assuming that the area can
-                        be
-                        reached.</p>
+                    <p class="description">
+                        The requirements to reach each chest and open it,
+                        assuming that the area can be reached.
+                    </p>
                 </div>
                 <i class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
             </div>
@@ -43,6 +63,7 @@
 </body>
 
 <footer>
+    <script src="/js/loadLogic.js"></script>
     <script src="/js/validateChestRequirements.js"></script>
 </footer>
 
